@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>gh3* | Wastewater Maintenance & Administration Facility Tender Poll</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS Engine CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            architect: {
+              950: '#090c10', // Deep atmospheric void
+              900: '#10141b', // Twilight dark slate blue
+              800: '#1b212c', // Architectural core warm charcoal
+              400: '#8c9cb2', // Cool steel blue grey
+              50: '#f5f7f9',
+              accent: '#f28338' // Glowing warm window amber/orange matching VIEW 10.jpg
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      -webkit-text-size-adjust: 100%;
+      -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
+      background-color: #090c10;
+    }
+
+    @media (max-width: 767px) {
+      input, select, textarea {
+        font-size: 16px !important;
+      }
+    }
+    
+    @media (min-width: 768px) {
+      input, select, textarea {
+        font-size: 12px !important;
+      }
+    }
+
+    .dynamic-screen {
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+
+    .safe-top-padding {
+      padding-top: max(1.5rem, env(safe-area-inset-top));
+    }
+    .safe-bottom-padding {
+      padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+    }
+
+    /* Custom range thumb stylized for VIEW 10.jpg twilight theme */
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      background: #f28338;
+      cursor: pointer;
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 12px rgba(242, 131, 56, 0.6);
+      transition: background-color 0.15s, transform 0.1s;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      background: #ffa163;
+      transform: scale(1.1);
+    }
+    
+    input[type="range"]::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      background: #f28338;
+      cursor: pointer;
+      border: 2px solid #ffffff;
+      border-radius: 0;
+      box-shadow: 0 0 12px rgba(242, 131, 56, 0.6);
+      transition: background-color 0.15s, transform 0.1s;
+    }
+    input[type="range"]::-moz-range-thumb:hover {
+      background: #ffa163;
+      transform: scale(1.1);
+    }
+
+    .ios-scroll {
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #10141b;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #f28338;
+    }
+
+    /* Fine crosshair overlay mapping back to blueprint coordinate lines */
+    .blueprint-crosshair {
+      background-size: 30px 30px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+    }
+  </style>
+</head>
+<body class="font-sans text-neutral-100 selection:bg-architect-accent selection:text-neutral-950 dynamic-screen flex flex-col justify-between blueprint-crosshair relative">
+
+  <!-- Ambient Dusk Background & Dark Scrim Overlays -->
+  <div class="fixed inset-0 z-0 w-full h-full overflow-hidden pointer-events-none">
+    <div class="absolute inset-0 bg-cover bg-[45%_35%] transition-all duration-[3000ms] ease-in-out opacity-75 scale-105" 
+         style="background-image: url('https://images.squarespace-cdn.com/content/v1/58811ba703596e4e5107e3a4/9040ca53-8e06-40a4-b867-2a0354891b07/gh3-Barrie+WWIC-09.jpg?format=2500w');"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-architect-950 via-architect-950/20 to-architect-950/70"></div>
+  </div>
+
+  <header class="relative z-20 w-full px-4 md:px-8 safe-top-padding">
+    <div class="max-w-7xl mx-auto flex justify-between items-center py-4">
+      <div class="flex items-baseline space-x-1.5">
+        <span class="text-lg md:text-xl font-extrabold tracking-tighter text-white font-mono">
+          gh3*<span class="text-neutral-400 font-sans font-light text-base md:text-lg ml-0.5">architects</span>
+        </span>
+        <span class="hidden sm:inline-block text-[9px] tracking-widest text-neutral-400 uppercase font-mono pl-3 border-l border-neutral-800 ml-3">
+          Barrie Facility Poll
+        </span>
+      </div>
+
+      <div class="flex items-center space-x-2 md:space-x-3">
+        <button 
+          onclick="toggleModal('infoModal', true)"
+          class="p-2.5 text-neutral-400 hover:text-white transition duration-200"
+          title="Consultant Spec Matrix"
+        >
+          <i data-lucide="info" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative z-10 max-w-3xl mx-auto w-full px-4 md:px-8 py-8 flex-grow flex items-center pb-[42vh]">
+    <!-- Reduced the vertical spacing between title block and form panel -->
+    <div class="w-full space-y-12 md:space-y-16 my-auto">
+      
+      <!-- Elegant Project Detail Text (Stacked above form) -->
+      <div class="space-y-5 text-white pb-2">
+        <span class="text-[9px] tracking-widest text-architect-400 font-mono uppercase block">// STANTEC PROJECT NO. 140023037</span>
+        
+        <h1 class="text-3xl md:text-5xl lg:text-6xl font-light tracking-tight uppercase leading-none">
+          Wastewater <br class="hidden sm:inline" />
+          <span class="font-bold text-neutral-100">Maintenance &</span> <br />
+          <span class="text-architect-accent">Administration</span>
+        </h1>
+
+        <p class="text-xs md:text-sm font-light text-neutral-300 max-w-2xl leading-relaxed">
+          Design Lead <strong class="font-semibold text-white">gh3 Architects Inc.</strong> and Architect of Record <strong class="font-semibold text-white">Stantec</strong> present the 151 Bradford Street civic development. Register your forecast of the lowest and median accepted tenders.
+        </p>
+
+        <!-- Dynamic specifications block -->
+        <div class="border-t border-b border-neutral-800 py-3 max-w-2xl grid grid-cols-2 gap-4 text-[10px] md:text-xs font-mono">
+          <div>
+            <span class="text-[8px] text-neutral-500 uppercase tracking-widest block">Issue Status</span>
+            <span class="text-neutral-200 font-bold">ISSUED FOR TENDER</span>
+          </div>
+          <div>
+            <span class="text-[8px] text-neutral-500 uppercase tracking-widest block">Drawing Release Date</span>
+            <span class="text-neutral-200 font-bold">2026.04.27</span>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-2 text-[9px] font-mono text-neutral-400">
+          <span class="w-1.5 h-1.5 bg-architect-accent rounded-full animate-pulse"></span>
+          <span>Forecast scale: $0 – $60M CAD in $50K steps</span>
+        </div>
+      </div>
+
+      <!-- Modernist Form Panel -->
+      <div class="w-full pb-6 pt-2 md:pt-4">
+        <div class="bg-neutral-900/95 border-t-4 border-architect-accent p-5 md:p-8 shadow-2xl relative border border-neutral-800 backdrop-blur-md">
+          
+          <!-- State 1: Clean Registry Form -->
+          <form id="bidForm" onsubmit="handleFormSubmit(event)" class="space-y-4 md:space-y-5 font-mono">
+            <div class="border-b border-neutral-800 pb-3 flex flex-col gap-2">
+              <div>
+                <h2 class="text-sm sm:text-base md:text-lg lg:text-xl font-extrabold uppercase tracking-wide text-white">Project Construction budget 30.5 million dollars</h2>
+                <p class="text-[9px] md:text-[10px] text-neutral-400 mt-1">Submit your forecast parameters below</p>
+              </div>
+              <div class="flex justify-start">
+                <button 
+                  type="button" 
+                  onclick="triggerAIFeasibility()" 
+                  class="text-[9px] px-2.5 py-1.5 bg-architect-accent/10 border border-architect-accent/30 hover:border-architect-accent text-architect-accent transition flex items-center space-x-1"
+                >
+                  <i data-lucide="sparkles" class="w-3 h-3"></i>
+                  <span>AI Feasibility Advisor</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Error Notification Alert Box -->
+            <div id="formErrorMessage" class="hidden p-3 bg-red-950/50 border-l-2 border-red-500 text-red-200 text-[10px] uppercase tracking-wider">
+              Please check your parameters and try again.
+            </div>
+
+            <!-- AI Bid Feasibility Review Panel -->
+            <div id="aiFeasibilityPanel" class="hidden bg-neutral-950 border border-architect-accent/30 p-4 space-y-2 transition-all duration-300">
+              <div class="flex justify-between items-center border-b border-neutral-800 pb-2">
+                <span class="text-[9px] uppercase font-bold text-architect-accent flex items-center space-x-1">
+                  <i data-lucide="brain" class="w-3.5 h-3.5"></i>
+                  <span>Gemini Estimator Review</span>
+                </span>
+                <button type="button" onclick="toggleAIPanel('aiFeasibilityPanel', false)" class="text-neutral-500 hover:text-white">
+                  <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+              <div id="aiFeasibilityContent" class="text-[10px] leading-relaxed text-neutral-300 font-sans">
+                <!-- Dynamically written by Gemini -->
+              </div>
+            </div>
+
+            <!-- Double Slider System Section -->
+            <div class="space-y-4">
+              
+              <!-- SLIDER 1: Lowest Bid (CAD) -->
+              <div class="bg-architect-950 border border-neutral-800 p-3.5 md:p-4 space-y-3">
+                <div class="flex justify-between items-center">
+                  <span class="text-[8px] md:text-[9px] uppercase font-bold tracking-wider text-white">Lowest Bid (CAD)</span>
+                  
+                  <div class="relative">
+                    <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-500 text-[10px] font-bold">CAD $</span>
+                    <input
+                      type="number"
+                      id="inputBidAmount"
+                      min="0"
+                      max="60000000"
+                      step="50000"
+                      value="30500000"
+                      oninput="syncSliderAndInput('lowest', 'input')"
+                      class="bg-neutral-900 border border-neutral-800 pl-11 pr-2 py-2 text-xs md:text-sm font-bold text-white w-36 focus:outline-none focus:border-architect-accent rounded-none"
+                    />
+                  </div>
+                </div>
+
+                <div class="space-y-2">
+                  <input
+                    type="range"
+                    id="sliderBidAmount"
+                    min="0"
+                    max="60000000"
+                    step="50000"
+                    value="30500000"
+                    oninput="syncSliderAndInput('lowest', 'slider')"
+                    class="w-full h-1 bg-neutral-800 rounded-none appearance-none cursor-pointer accent-architect-accent block"
+                  />
+                  <div class="flex justify-between text-[9px] text-neutral-500 font-bold">
+                    <span>$0</span>
+                    <span class="text-architect-accent underline font-bold" id="formattedDisplayAmount">$30,500,000 CAD</span>
+                    <span>$60M</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SLIDER 2: Median Bid (CAD) [Bonus Double Slider] -->
+              <div class="bg-architect-950 border border-neutral-800 p-3.5 md:p-4 space-y-3">
+                <div class="flex justify-between items-center">
+                  <span class="text-[8px] md:text-[9px] uppercase font-bold tracking-wider text-white">Median Bid (CAD) <span class="text-architect-accent text-[8px]">[Bonus]</span></span>
+                  
+                  <div class="relative">
+                    <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-500 text-[10px] font-bold">CAD $</span>
+                    <input
+                      type="number"
+                      id="inputMedianAmount"
+                      min="0"
+                      max="60000000"
+                      step="50000"
+                      value="32000000"
+                      oninput="syncSliderAndInput('median', 'input')"
+                      class="bg-neutral-900 border border-neutral-800 pl-11 pr-2 py-2 text-xs md:text-sm font-bold text-white w-36 focus:outline-none focus:border-architect-accent rounded-none"
+                    />
+                  </div>
+                </div>
+
+                <div class="space-y-2">
+                  <input
+                    type="range"
+                    id="sliderMedianAmount"
+                    min="0"
+                    max="60000000"
+                    step="50000"
+                    value="32000000"
+                    oninput="syncSliderAndInput('median', 'slider')"
+                    class="w-full h-1 bg-neutral-800 rounded-none appearance-none cursor-pointer accent-architect-accent block"
+                  />
+                  <div class="flex justify-between text-[9px] text-neutral-500 font-bold">
+                    <span>$0</span>
+                    <span class="text-architect-accent underline font-bold" id="formattedDisplayMedianAmount">$32,000,000 CAD</span>
+                    <span>$60M</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Single Name Field (Email and Company parameters completely removed) -->
+            <div>
+              <label class="block text-[8px] md:text-[9px] uppercase font-bold tracking-wider text-neutral-400 mb-1">Your Name</label>
+              <input
+                type="text"
+                id="inputName"
+                required
+                placeholder="e.g. Alexis Chen"
+                class="w-full bg-architect-950 border border-neutral-800 text-white px-3 py-2.5 text-xs focus:outline-none focus:border-architect-accent focus:bg-neutral-900 transition rounded-none"
+              />
+            </div>
+
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-[8px] md:text-[9px] uppercase font-bold tracking-wider text-neutral-400">Rationale Statement (Optional)</label>
+                <button
+                  type="button"
+                  id="aiRationaleBtn"
+                  onclick="triggerAIRationale()"
+                  class="text-[9px] text-architect-accent hover:text-white transition flex items-center space-x-1"
+                >
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                  <span>Draft with AI</span>
+                </button>
+              </div>
+              <textarea
+                id="inputJustification"
+                rows="2"
+                placeholder="Comment on structural wood components, copper louvers, or twilight glass arrays..."
+                class="w-full bg-architect-950 border border-neutral-800 text-white px-3 py-2.5 text-xs focus:outline-none focus:border-architect-accent focus:bg-neutral-900 transition font-sans leading-relaxed rounded-none"
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              id="submitButton"
+              class="w-full bg-architect-accent hover:bg-architect-accent/90 text-neutral-950 font-bold uppercase tracking-widest text-xs py-4 transition duration-150 rounded-none select-none flex items-center justify-center space-x-2"
+            >
+              <span>Submit Bid Forecast</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+          </form>
+
+          <!-- State 2: Success Confirmation Panel -->
+          <div id="successPanel" class="hidden py-12 text-center space-y-6 font-mono text-white">
+            <div class="w-12 h-12 border border-architect-accent rounded-full flex items-center justify-center mx-auto text-architect-accent text-lg font-bold">
+              ✓
+            </div>
+            <div class="space-y-2">
+              <h3 class="text-xs font-bold tracking-widest uppercase text-white">SUBMISSION REGISTERED</h3>
+              <p class="text-xs text-neutral-400 leading-relaxed max-w-xs mx-auto font-sans px-4">
+                Thank you. Your forecast parameter metrics have been catalogued globally into the secure audit registry index.
+              </p>
+            </div>
+            <div class="flex justify-center pt-4 px-4">
+              <button
+                onclick="resetFormState()"
+                class="px-8 py-3 border border-neutral-800 text-neutral-400 hover:text-white font-mono text-[10px] uppercase tracking-widest transition duration-200 rounded-none select-none"
+              >
+                New Estimate
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="relative z-10 w-full px-4 md:px-8 border-t border-neutral-900 bg-architect-950/95 backdrop-blur-md safe-bottom-padding">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-[9px] md:text-[10px] text-neutral-500 font-mono py-4 space-y-3 md:space-y-0 text-center md:text-left">
+      <div>
+        <span>© 2026 TENDER ASSESSMENT FOR BARRIE FACILITY [REF: VIEW 10.jpg]</span>
+      </div>
+      
+      <div class="flex items-center space-x-4 md:space-x-6">
+        <!-- Secure login trigger -->
+        <button 
+          onclick="toggleModal('adminModal', true)"
+          class="hover:text-white flex items-center space-x-1.5 transition duration-200 p-2 text-[9px]"
+        >
+          <i data-lucide="lock" class="w-3 h-3 text-neutral-500"></i>
+          <span>Secure Audit Panel</span>
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Audit Panel Dashboard (Secret Access portal) -->
+  <div id="adminModal" class="fixed inset-0 z-50 overflow-y-auto bg-neutral-950/95 backdrop-blur-md hidden items-center justify-center p-3 safe-top-padding safe-bottom-padding">
+    <div class="bg-neutral-900 border border-neutral-800 w-full max-w-6xl p-5 md:p-8 font-mono relative max-h-[90vh] flex flex-col justify-between text-white overflow-hidden">
+      
+      <button 
+        onclick="toggleModal('adminModal', false)"
+        class="absolute top-4 right-4 text-neutral-400 hover:text-white p-2 z-20"
+      >
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+
+      <!-- Substate 1: Access Password Shield -->
+      <div id="adminAuthView" class="max-w-md mx-auto py-8 md:py-12 text-center space-y-5 w-full">
+        <div class="w-12 h-12 border border-neutral-800 rounded-full flex items-center justify-center mx-auto text-neutral-400">
+          <i data-lucide="lock" class="w-5 h-5"></i>
+        </div>
+        
+        <div>
+          <h3 class="text-xs font-bold tracking-widest uppercase text-white">AUTHENTICATE REGISTRY AUDIT</h3>
+          <p class="text-[10px] text-neutral-400 mt-1 leading-relaxed font-sans px-4">
+            Verify forecast models and export clean data entries instantly.
+          </p>
+        </div>
+
+        <form onsubmit="handleAdminAuth(event)" class="space-y-4 px-4">
+          <input
+            type="password"
+            id="adminPassword"
+            required
+            placeholder="Enter Admin Password"
+            class="w-full bg-architect-950 border border-neutral-800 text-white px-4 py-3 text-center text-sm focus:outline-none focus:border-architect-accent rounded-none"
+          />
+          <div id="adminErrorMessage" class="hidden text-[10px] text-red-400 font-bold">Invalid access Key. Keep guessing!</div>
+          
+          <button
+            type="submit"
+            class="w-full py-3.5 bg-architect-accent hover:bg-architect-accent/90 text-neutral-950 text-xs font-bold uppercase tracking-widest transition rounded-none select-none"
+          >
+            Authenticate
+          </button>
+        </form>
+      </div>
+
+      <!-- Substate 2: Dashboard Real-Time View (All data moved inside here) -->
+      <div id="adminDashboardView" class="hidden space-y-4 flex-1 flex flex-col justify-between overflow-hidden">
+        
+        <!-- Header controls inside authenticated panel -->
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3 border-b border-neutral-800 pb-4">
+          <div>
+            <h3 class="text-[11px] md:text-xs font-bold tracking-widest uppercase text-white">// SECURE SYSTEM DATABASE CONTEXT</h3>
+            <p class="text-[9px] text-neutral-400 mt-0.5">Tracking <span id="adminRecordsCount">0</span> global entries registered to Stantec Project 140023037</p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
+            <button
+              onclick="triggerAIConsensusReport()"
+              class="px-3.5 py-2.5 bg-architect-accent text-neutral-950 hover:bg-architect-accent/80 text-[10px] font-bold uppercase tracking-widest transition rounded-none select-none flex items-center space-x-1"
+            >
+              <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+              <span>Generate AI Consensus Synthesis</span>
+            </button>
+
+            <button
+              onclick="addDemoRecord()"
+              class="px-3.5 py-2.5 bg-neutral-800 hover:bg-neutral-700 text-white text-[10px] font-bold uppercase tracking-widest transition rounded-none select-none"
+            >
+              + Mock Submitter
+            </button>
+            
+            <!-- Non-disruptive Custom Two-Step Confirm Reset Action -->
+            <button
+              id="dbClearBtn"
+              onclick="triggerClearDatabase()"
+              class="px-3.5 py-2.5 bg-red-950 hover:bg-red-900 border border-red-800 text-red-200 text-[10px] font-bold uppercase tracking-widest transition rounded-none select-none relative"
+            >
+              <span id="clearBtnText">Reset Session</span>
+            </button>
+
+            <button
+              onclick="exportDatabaseToCSV()"
+              class="px-3.5 py-2.5 bg-architect-accent hover:bg-architect-accent/90 text-neutral-950 text-[10px] font-bold uppercase tracking-widest flex items-center justify-center space-x-2 transition rounded-none select-none"
+            >
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>CSV Export</span>
+            </button>
+            <button
+              onclick="lockAdminDashboard()"
+              class="px-3.5 py-2.5 border border-neutral-800 text-neutral-400 hover:text-white text-[10px] uppercase transition rounded-none select-none"
+            >
+              Lock Panel
+            </button>
+          </div>
+        </div>
+
+        <!-- Two-Column Restricted workspace layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 overflow-hidden flex-1">
+          
+          <!-- Column 1: Live Interactive spreadsheet -->
+          <div class="lg:col-span-7 flex flex-col overflow-hidden border border-neutral-800">
+            <div class="bg-architect-950 px-3 py-2 border-b border-neutral-800 text-[9px] uppercase tracking-wider text-neutral-400 flex items-center justify-between">
+              <span>// Registered Table Log</span>
+              <span class="text-[8px] bg-neutral-900 px-1.5 py-0.5 text-neutral-500">spreadsheet format</span>
+            </div>
+            <div class="overflow-x-auto overflow-y-auto flex-1 custom-scrollbar ios-scroll bg-architect-950/50">
+              <table class="w-full text-left text-[11px] border-collapse min-w-[500px]">
+                <thead>
+                  <tr class="bg-architect-950 text-neutral-400 border-b border-neutral-800 uppercase tracking-widest text-[8px] font-bold sticky top-0 z-10">
+                    <th class="px-3 py-2.5 border-r border-neutral-800">Submitter Name</th>
+                    <th class="px-3 py-2.5 border-r border-neutral-800">Lowest Bid</th>
+                    <th class="px-3 py-2.5 border-r border-neutral-800">Median Bid</th>
+                    <th class="px-3 py-2.5 border-r border-neutral-800">Rationale Statement</th>
+                    <th class="px-3 py-2.5 text-right">Time Registered</th>
+                  </tr>
+                </thead>
+                <tbody id="adminTableBody" class="divide-y divide-neutral-800 text-neutral-300">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Column 2: Visual crowd statistics panel -->
+          <div class="lg:col-span-5 flex flex-col overflow-hidden border border-neutral-800 bg-architect-950">
+            <div class="bg-architect-950 px-3 py-2 border-b border-neutral-800 text-[9px] uppercase tracking-wider text-neutral-400 flex items-center justify-between">
+              <span>// Crowd Consensus Analytics</span>
+              <span class="text-[8px] text-architect-accent">real-time sync</span>
+            </div>
+            
+            <div class="p-4 flex-1 overflow-y-auto space-y-5 custom-scrollbar ios-scroll">
+              
+              <!-- Metrics widgets inside secure workspace -->
+              <div class="grid grid-cols-3 gap-2">
+                <div class="bg-neutral-900 p-2 border border-neutral-800">
+                  <span class="text-[7px] text-neutral-500 uppercase block font-bold">Total Entries</span>
+                  <span class="text-sm font-bold mt-1 text-white block" id="statCount">0</span>
+                </div>
+                <div class="bg-neutral-900 p-2 border border-neutral-800">
+                  <span class="text-[7px] text-neutral-500 uppercase block font-bold">Avg Lowest</span>
+                  <span class="text-sm font-bold mt-1 text-architect-accent block truncate" id="statAverage">$0</span>
+                </div>
+                <div class="bg-neutral-900 p-2 border border-neutral-800">
+                  <span class="text-[7px] text-neutral-500 uppercase block font-bold">Avg Median</span>
+                  <span class="text-sm font-bold mt-1 text-white block truncate" id="statMedianAvg">$0</span>
+                </div>
+              </div>
+
+              <!-- Live distribution charts brackets -->
+              <div class="space-y-2">
+                <h4 class="text-[8px] uppercase font-bold tracking-widest text-neutral-400">// LOWEST BID DISTRIBUTION BRACKETS</h4>
+                
+                <div id="noDataAlert" class="py-6 border border-dashed border-neutral-800 text-center text-[10px] text-neutral-400 font-sans">
+                  No forecasts registered yet in this session database.
+                </div>
+
+                <div id="distributionContainer" class="space-y-2.5 hidden">
+                  <!-- Dynamic Chart Bars generated via JavaScript -->
+                </div>
+              </div>
+
+              <!-- Live rationale comments from database -->
+              <div class="space-y-2 pt-2 border-t border-neutral-800">
+                <h4 class="text-[8px] uppercase font-bold tracking-widest text-neutral-400">// PARTICIPANT JUSTIFICATIONS LOG</h4>
+                <div id="rationalesContainer" class="space-y-2.5 max-h-[160px] overflow-y-auto pr-1 custom-scrollbar ios-scroll">
+                  <p class="text-[11px] font-sans text-neutral-500 italic">No justifications recorded.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Gemini consensus report modal -->
+  <div id="aiConsensusModal" class="fixed inset-0 z-[60] bg-neutral-950/90 backdrop-blur-md hidden items-center justify-center p-3 safe-top-padding safe-bottom-padding">
+    <div class="bg-neutral-900 border border-architect-accent w-full max-w-3xl p-5 md:p-8 font-mono relative max-h-[90vh] flex flex-col justify-between text-white overflow-hidden">
+      
+      <button 
+        onclick="toggleModal('aiConsensusModal', false)"
+        class="absolute top-4 right-4 text-neutral-400 hover:text-white p-2 z-20"
+      >
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+
+      <div class="space-y-4 md:space-y-5 flex-1 overflow-y-auto custom-scrollbar ios-scroll pr-1">
+        <div class="border-b border-neutral-800 pb-3 flex items-center space-x-2">
+          <div class="p-1.5 bg-architect-accent/10 border border-architect-accent/30 rounded">
+            <i data-lucide="brain-circuit" class="w-5 h-5 text-architect-accent"></i>
+          </div>
+          <div>
+            <span class="text-[8px] text-neutral-400 uppercase tracking-widest font-bold">GEMINI COGNITIVE CONTEXT SYNTHESIS</span>
+            <h3 class="text-xs md:text-sm font-bold text-white uppercase tracking-tight mt-0.5">EXECUTIVE BIDDING CONSENSUS SUMMARY</h3>
+          </div>
+        </div>
+
+        <div id="aiConsensusOutput" class="text-xs font-sans text-neutral-200 leading-relaxed whitespace-pre-line space-y-3">
+          <!-- Dynamically compiled reports -->
+        </div>
+      </div>
+
+      <div class="flex justify-end pt-3 border-t border-neutral-800">
+        <button
+          onclick="toggleModal('aiConsensusModal', false)"
+          class="w-full sm:w-auto px-5 py-2.5 bg-white hover:bg-neutral-100 text-neutral-950 text-xs font-bold uppercase tracking-widest transition rounded-none select-none"
+        >
+          Close Synthesis
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project consultants metadata spec modal -->
+  <div id="infoModal" class="fixed inset-0 z-50 overflow-y-auto bg-neutral-950/80 backdrop-blur-sm hidden items-center justify-center p-3 safe-top-padding safe-bottom-padding">
+    <div class="bg-neutral-900 border border-neutral-800 w-full max-w-2xl p-5 md:p-8 font-mono relative max-h-full flex flex-col justify-between overflow-hidden text-white">
+      
+      <button 
+        onclick="toggleModal('infoModal', false)"
+        class="absolute top-4 right-4 text-neutral-400 hover:text-white p-2"
+      >
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+
+      <div class="space-y-4 md:space-y-5 flex-1 overflow-y-auto custom-scrollbar ios-scroll pr-1">
+        <div class="border-b border-neutral-800 pb-3">
+          <span class="text-[8px] text-neutral-400 uppercase tracking-widest font-bold">DRAWING LOG FILE SPECIFICATION</span>
+          <h3 class="text-xs md:text-sm font-bold text-white uppercase tracking-tight mt-1">OFFICIAL PROJECT CONSULTANT MATRIX</h3>
+        </div>
+
+        <p class="text-[11px] font-sans text-neutral-400 leading-relaxed">
+          The structural, mechanical, and architectural logs correspond directly to the development of 151 Bradford Street.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3.5 text-[11px] border-b border-neutral-800 pb-4">
+          <div>
+            <span class="text-[8px] text-neutral-500 uppercase tracking-widest block font-bold">OWNER</span>
+            <span class="text-neutral-200 font-medium font-sans">City of Barrie</span>
+          </div>
+          <div>
+            <span class="text-[8px] text-neutral-500 uppercase tracking-widest block font-bold">ARCHITECT (AOR)</span>
+            <span class="text-neutral-200 font-medium font-sans">Stantec Architecture Ltd.</span>
+          </div>
+          <div>
+            <span class="text-[8px] text-neutral-500 uppercase tracking-widest block font-bold">ARCHITECT (DESIGN LEAD)</span>
+            <span class="text-white font-bold font-sans underline decoration-architect-accent decoration-2 underline-offset-2">gh3 Architects Inc.</span>
+          </div>
+          <div>
+            <span class="text-[8px] text-neutral-500 uppercase tracking-widest block font-bold">CIVIL ENGINEER</span>
+            <span class="text-neutral-200 font-medium font-sans">Stantec Consulting Ltd.</span>
+          </div>
+          <div>
+            <span class="text-[8px] text-neutral-500 uppercase tracking-widest block font-bold">STRUCTURAL ENGINEER</span>
+            <span class="text-neutral-200 font-medium font-sans">Stantec Consulting Ltd.</span>
+          </div>
+          <div>
+            <span class="text-[8px] text-neutral-500 uppercase tracking-widest block font-bold">MECHANICAL ENGINEER</span>
+            <span class="text-neutral-200 font-medium font-sans">Stantec Consulting Ltd.</span>
+          </div>
+          <div>
+            <span class="text-[8px] text-neutral-500 uppercase tracking-widest block font-bold">LANDSCAPE ARCHITECT</span>
+            <span class="text-neutral-200 font-medium font-sans">gh3 Inc.</span>
+          </div>
+          <div>
+            <span class="text-[8px] text-neutral-500 uppercase tracking-widest block font-bold">ELECTRICAL ENGINEER</span>
+            <span class="text-neutral-200 font-medium font-sans">Stantec Consulting Ltd.</span>
+          </div>
+        </div>
+
+        <div class="bg-architect-950 p-3.5 border border-neutral-800 text-[10px] space-y-1">
+          <p><span class="text-neutral-500">PROJECT NUMBER:</span> <span class="text-white font-bold">140023037</span></p>
+          <p><span class="text-neutral-500">DRAWING SPECIFICATION:</span> <span class="text-white font-bold">ISSUED FOR TENDER</span></p>
+          <p><span class="text-neutral-500">PRIMARY DRAWING REFERENCE:</span> <span class="text-white font-bold">VIEW 10.jpg</span></p>
+        </div>
+      </div>
+
+      <div class="flex justify-end pt-3 border-t border-neutral-800">
+        <button
+          onclick="toggleModal('infoModal', false)"
+          class="w-full sm:w-auto px-5 py-2.5 bg-white hover:bg-neutral-100 text-neutral-950 text-xs font-bold uppercase tracking-widest transition rounded-none select-none"
+        >
+          Close Matrix
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modern Modular Firebase Core Engine Integration -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, collection, addDoc, getDocs, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // Application ID Configuration
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'barrie-wastewater-poll-v2';
+    
+    // User-provided web app's Firebase configuration
+    const userFirebaseConfig = {
+      apiKey: "AIzaSyBn92mUf2OwFl2vwhg-XmcFs3xWaS3Qx6c",
+      authDomain: "barrie-wwic-bid-lottery-24b12.firebaseapp.com",
+      projectId: "barrie-wwic-bid-lottery-24b12",
+      storageBucket: "barrie-wwic-bid-lottery-24b12.firebasestorage.app",
+      messagingSenderId: "618385101727",
+      appId: "1:618385101727:web:113af44171f0ce062f63aa",
+      measurementId: "G-VF4NJFE3FT"
+    };
+
+    const firebaseConfigStr = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
+    let firebaseConfig = userFirebaseConfig;
+
+    if (firebaseConfigStr) {
+      try {
+        firebaseConfig = JSON.parse(firebaseConfigStr);
+      } catch(e) {
+        console.error("Error parsing environment firebase config, falling back to static config:", e);
+      }
+    }
+
+    // Database state initialized completely clean
+    let bidDatabase = [];
+    let isDemoMode = false;
+    let db = null;
+    let auth = null;
+    let analytics = null;
+
+    // Consensus distribution categories (Re-scaled for $0 to $60M range)
+    const STATS_RANGES = [
+      { label: "Under $15M CAD", min: 0, max: 15000000 },
+      { label: "$15M – $30M CAD", min: 15000000, max: 30000000 },
+      { label: "$30M – $45M CAD", min: 30000000, max: 45000000 },
+      { label: "$45M – $60M CAD", min: 45000000, max: Infinity }
+    ];
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initAppEngine();
+      lucide.createIcons();
+      syncSliderAndInput('lowest', 'slider');
+      syncSliderAndInput('median', 'slider');
+    });
+
+    // Initialize Database System
+    async function initAppEngine() {
+      if (!firebaseConfig || !firebaseConfig.apiKey || firebaseConfig.apiKey.includes("placeholder") || firebaseConfig.projectId.includes("placeholder")) {
+        switchToDemoMode();
+      } else {
+        try {
+          const app = initializeApp(firebaseConfig);
+          
+          // Optional analytics integration with dynamic safety block
+          try {
+            analytics = getAnalytics(app);
+          } catch (analyticsError) {
+            console.warn("Analytics initialization skipped:", analyticsError.message);
+          }
+
+          db = getFirestore(app);
+          auth = getAuth(app);
+          
+          let userCredential;
+          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            userCredential = await signInWithCustomToken(auth, __initial_auth_token);
+          } else {
+            userCredential = await signInAnonymously(auth);
+          }
+
+          const user = userCredential.user;
+          if (!user) {
+            switchToDemoMode();
+            return;
+          }
+
+          const bidsCol = collection(db, 'artifacts', appId, 'public', 'data', 'bids');
+
+          onSnapshot(bidsCol, (snapshot) => {
+            const tempBids = [];
+            snapshot.forEach(docSnap => {
+              tempBids.push({ id: docSnap.id, ...docSnap.data() });
+            });
+            // Sort by descending timestamp in memory
+            tempBids.sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
+            bidDatabase = tempBids;
+            onDatabaseUpdated();
+          }, (err) => {
+            console.error("Firestore onSnapshot error, running sandbox fallback", err);
+            switchToDemoMode();
+          });
+
+        } catch (e) {
+          console.error("Firebase startup exception", e);
+          switchToDemoMode();
+        }
+      }
+    }
+
+    function switchToDemoMode() {
+      isDemoMode = true;
+      loadSandboxDatabase();
+    }
+
+    // Load Local Clean Database State
+    function loadSandboxDatabase() {
+      const stored = localStorage.getItem(`gh3_clean_bids_${appId}`);
+      if (stored) {
+        bidDatabase = JSON.parse(stored);
+      } else {
+        bidDatabase = [];
+        localStorage.setItem(`gh3_clean_bids_${appId}`, JSON.stringify(bidDatabase));
+      }
+      onDatabaseUpdated();
+    }
+
+    function onDatabaseUpdated() {
+      updateConsensusStats();
+      rebuildAdminRegistry();
+    }
+
+    // --- GEMINI API CALL INTEGRATION HELPER ---
+    async function callGemini(prompt, systemPrompt = "") {
+      const apiKey = ""; // Left empty as Canvas runtime automatically injects correct token
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+      const payload = {
+        contents: [{ parts: [{ text: prompt }] }],
+        systemInstruction: systemPrompt ? { parts: [{ text: systemPrompt }] } : undefined
+      };
+
+      // Exponential backoff mechanism for API calls
+      let delay = 1000;
+      for (let attempt = 0; attempt < 4; attempt++) {
+        try {
+          const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          
+          if (!response.ok) {
+            throw new Error(`Gemini API request failed with status: ${response.status}`);
+          }
+          
+          const result = await response.json();
+          const candidate = result.candidates?.[0];
+          if (candidate && candidate.content?.parts?.[0]?.text) {
+            return candidate.content.parts[0].text;
+          }
+          throw new Error("Unexpected payload response model structure");
+        } catch (error) {
+          if (attempt === 3) {
+            throw error;
+          }
+          await new Promise(resolve => setTimeout(resolve, delay));
+          delay *= 2;
+        }
+      }
+    }
+
+    // --- FEATURE A: AI RATIONALE WRITER ---
+    async function triggerAIRationale() {
+      const btn = document.getElementById('aiRationaleBtn');
+      const textarea = document.getElementById('inputJustification');
+      const lowestBid = Number(document.getElementById('inputBidAmount').value);
+      const medianBid = Number(document.getElementById('inputMedianAmount').value);
+      
+      const originalHTML = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i><span>Formulating...</span>`;
+      lucide.createIcons();
+
+      const formatLowest = formatCurrency(lowestBid);
+      const formatMedian = formatCurrency(medianBid);
+
+      const systemPrompt = "Act as an experienced architectural estimator and civil engineering consultant specialized in municipal wastewater facility design. Keep drafts concise (2 to 3 sentences maximum), realistic, highly professional, and ready to paste.";
+      const prompt = `Formulate a concise rationale statement supporting a tender forecast of Lowest Bid: ${formatLowest} CAD and Median Bid: ${formatMedian} CAD. Ground the response on the architectural project characteristics of the gh3* designed 151 Bradford Street project: its distinctive vertical copper louvers, twilight glazed curtainwalls, high-performance mass timber building envelope, civil site engineering constraints, and complex mechanical process loops. Do not mention that this text is generated, start writing immediately.`;
+
+      try {
+        const result = await callGemini(prompt, systemPrompt);
+        textarea.value = result.trim();
+      } catch (error) {
+        console.error("Gemini AI failed to compile rationale:", error);
+        textarea.value = `Tender values evaluated at ${formatLowest} (Lowest) and ${formatMedian} (Median) reflecting municipal process water allocations, premium thermal barrier curtainwalls, and material procurement dynamics.`;
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+        lucide.createIcons();
+      }
+    }
+
+    // --- FEATURE B: AI FEASIBILITY ADVISOR ---
+    async function triggerAIFeasibility() {
+      const panel = document.getElementById('aiFeasibilityPanel');
+      const container = document.getElementById('aiFeasibilityContent');
+      const lowestBid = Number(document.getElementById('inputBidAmount').value);
+      const medianBid = Number(document.getElementById('inputMedianAmount').value);
+      const budget = 30500000; // $30.5M
+
+      panel.classList.remove('hidden');
+      container.innerHTML = `
+        <div class="flex items-center space-x-2 py-2">
+          <i data-lucide="loader-2" class="w-4 h-4 animate-spin text-architect-accent"></i>
+          <span class="text-neutral-400 font-mono text-[9px] uppercase tracking-wider">Evaluating bid structure parameters against baseline...</span>
+        </div>
+      `;
+      lucide.createIcons();
+
+      const systemPrompt = "Act as a strict, knowledgeable financial audit coordinator assessing civil construction contracts. Write a single concise analysis paragraph (max 120 words). Identify cost-saving areas or overspending concerns with structural clarity.";
+      const prompt = `Conduct a bid feasibility assessment for 151 Bradford Street. Baseline budget is $30,500,000 CAD. User's proposed lowest bid is $${lowestBid.toLocaleString()} CAD, and their median bid is $${medianBid.toLocaleString()} CAD. Focus specifically on whether their pricing allows room for the building's premium features (like custom copper louver systems and mass-timber structures) or if bidding too low/high risks budget overruns or missing procurement guidelines. Be direct, crisp, and objective.`;
+
+      try {
+        const text = await callGemini(prompt, systemPrompt);
+        container.innerHTML = `<p class="leading-relaxed font-sans text-neutral-300">${text}</p>`;
+      } catch (error) {
+        console.error("Feasibility analysis failure:", error);
+        container.innerHTML = `<span class="text-red-400">Unable to establish cognitive link with Gemini. Ensure system constraints are maintained.</span>`;
+      }
+    }
+
+    function toggleAIPanel(id, show) {
+      const panel = document.getElementById(id);
+      if (show) panel.classList.remove('hidden');
+      else panel.classList.add('hidden');
+    }
+
+    // --- FEATURE C: ADMIN AI CONSENSUS REPORT GENERATION ---
+    async function triggerAIConsensusReport() {
+      const outputModal = document.getElementById('aiConsensusModal');
+      const outputContainer = document.getElementById('aiConsensusOutput');
+
+      outputModal.classList.remove('hidden');
+      outputModal.classList.add('flex');
+
+      outputContainer.innerHTML = `
+        <div class="flex flex-col items-center justify-center py-12 space-y-3">
+          <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-architect-accent"></i>
+          <span class="text-neutral-400 text-[10px] uppercase tracking-widest font-mono">Synthesizing crowdsourced database with Gemini model...</span>
+        </div>
+      `;
+      lucide.createIcons();
+
+      if (bidDatabase.length === 0) {
+        outputContainer.innerHTML = `
+          <div class="text-center py-8">
+            <i data-lucide="database" class="w-8 h-8 text-neutral-600 mx-auto mb-2"></i>
+            <p class="text-[11px] text-neutral-400 font-sans">No bid registry entries are currently active. Populate data entries first before running database synthesis.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      // Serialize current spreadsheet state for Gemini context
+      const recordsFormatted = bidDatabase.map((b, i) => {
+        return `Entry #${i+1}: Name: ${b.name} | Lowest Bid: $${Number(b.bidAmount).toLocaleString()} | Median Bid: $${Number(b.medianAmount || b.bidAmount).toLocaleString()} | Rationale: ${b.justification || 'None'}`;
+      }).join("\n");
+
+      const systemPrompt = "Act as an executive director of architectural program reviews. Synthesize complex bid collections into neat, structured reports. Output paragraphs should utilize professional vocabulary with key metrics bolded.";
+      const prompt = `Synthesize the following list of crowdsourced tender forecasts for the Barrie Wastewater project (Target construction budget: $30.5M CAD):\n\n${recordsFormatted}\n\nDeliver an executive synthesis report including:\n1. A consolidated summary of the crowd's bid trends (are bids skewing higher or lower than $30.5M?)\n2. An analysis of the primary architectural cost drivers and concerns extracted from the justifications (such as timber, copper louvers, site civil works)\n3. A direct assessment of bidding density and overall forecast risk profile. Keep it under 250 words total, structured in clean block-paragraphs.`;
+
+      try {
+        const summary = await callGemini(prompt, systemPrompt);
+        // Clean markdown formatting if returned
+        outputContainer.innerHTML = `
+          <div class="space-y-4 font-sans text-neutral-200">
+            <div class="border-l-2 border-architect-accent pl-3 text-[10px] uppercase tracking-wider font-mono text-neutral-400">
+              Generated in real-time across ${bidDatabase.length} registered database objects
+            </div>
+            <div class="prose prose-invert text-xs leading-relaxed">
+              ${summary}
+            </div>
+          </div>
+        `;
+      } catch (error) {
+        console.error("Consensus generation error:", error);
+        outputContainer.innerHTML = `<span class="text-red-400">Error: Unable to complete real-time database synthesis. Please check internet connection or API bounds.</span>`;
+      }
+    }
+
+    // Dynamic consensus tracking inside hidden panels
+    function updateConsensusStats() {
+      const totalCount = bidDatabase.length;
+      
+      const countEl = document.getElementById('statCount');
+      if (countEl) countEl.textContent = totalCount;
+      
+      const adminCountEl = document.getElementById('adminRecordsCount');
+      if (adminCountEl) adminCountEl.textContent = totalCount;
+
+      const noDataAlertEl = document.getElementById('noDataAlert');
+      const distContainerEl = document.getElementById('distributionContainer');
+      const rationalesContainerEl = document.getElementById('rationalesContainer');
+
+      if (totalCount === 0) {
+        const statAvgEl = document.getElementById('statAverage');
+        if (statAvgEl) statAvgEl.textContent = "$0";
+        
+        const statMedEl = document.getElementById('statMedianAvg');
+        if (statMedEl) statMedEl.textContent = "$0";
+
+        if (noDataAlertEl) noDataAlertEl.classList.remove('hidden');
+        if (distContainerEl) distContainerEl.classList.add('hidden');
+        if (rationalesContainerEl) {
+          rationalesContainerEl.innerHTML = `<p class="text-[11px] font-sans text-neutral-500 italic">No feedback registered.</p>`;
+        }
+        return;
+      }
+
+      if (noDataAlertEl) noDataAlertEl.classList.add('hidden');
+      if (distContainerEl) distContainerEl.classList.remove('hidden');
+
+      const lowestAmounts = bidDatabase.map(b => Number(b.bidAmount)).filter(v => !isNaN(v));
+      const medianAmounts = bidDatabase.map(b => Number(b.medianAmount || b.bidAmount)).filter(v => !isNaN(v));
+      
+      const lowestSum = lowestAmounts.reduce((sum, v) => sum + v, 0);
+      const medianSum = medianAmounts.reduce((sum, v) => sum + v, 0);
+      
+      const averageLowest = lowestSum / totalCount;
+      const averageMedian = medianSum / totalCount;
+
+      const statAvgEl = document.getElementById('statAverage');
+      if (statAvgEl) statAvgEl.textContent = formatCurrency(averageLowest);
+      
+      const statMedEl = document.getElementById('statMedianAvg');
+      if (statMedEl) statMedEl.textContent = formatCurrency(averageMedian);
+
+      // Render lowest bid distribution brackets
+      let distributionHTML = '';
+      STATS_RANGES.forEach(range => {
+        const matches = lowestAmounts.filter(amt => amt >= range.min && amt < range.max).length;
+        const percent = totalCount > 0 ? (matches / totalCount) * 100 : 0;
+        
+        distributionHTML += `
+          <div class="space-y-1">
+            <div class="flex justify-between text-[11px]">
+              <span class="text-neutral-300 font-bold">${range.label}</span>
+              <span class="text-neutral-500 text-[10px]">
+                ${matches} (${Math.round(percent)}%)
+              </span>
+            </div>
+            <div class="w-full bg-neutral-900 h-3 border border-neutral-800 p-0.5">
+              <div 
+                style="width: ${Math.max(percent, 2)}%"
+                class="bg-architect-accent h-full transition-all duration-700 ease-out"
+              ></div>
+            </div>
+          </div>
+        `;
+      });
+      if (distContainerEl) distContainerEl.innerHTML = distributionHTML;
+
+      // Render rationales
+      let rationalesHTML = '';
+      const feedbackBids = bidDatabase.filter(b => b.justification && b.justification.trim() !== "");
+      if (feedbackBids.length === 0) {
+        rationalesHTML = `<p class="text-[11px] font-sans text-neutral-500 italic">No feedback comments recorded.</p>`;
+      } else {
+        feedbackBids.forEach(b => {
+          rationalesHTML += `
+            <div class="bg-neutral-900 p-3 border border-neutral-800 text-[11px] leading-relaxed">
+              <div class="flex justify-between text-[8px] text-neutral-400 mb-1 font-mono">
+                <span>Lowest Forecast: <strong class="text-white">${formatCurrency(b.bidAmount)}</strong></span>
+                <span class="text-architect-accent font-bold">Median: ${formatCurrency(b.medianAmount || b.bidAmount)}</span>
+              </div>
+              <p class="font-sans text-neutral-300 leading-snug">"${escapeHTML(b.justification)}"</p>
+            </div>
+          `;
+        });
+      }
+      if (rationalesContainerEl) rationalesContainerEl.innerHTML = rationalesHTML;
+    }
+
+    // Populate administrative dashboard
+    function rebuildAdminRegistry() {
+      const tbody = document.getElementById('adminTableBody');
+      if (!tbody) return;
+
+      if (bidDatabase.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colSpan="5" class="text-center py-10 text-neutral-500 italic">
+              No registered estimates found in this session database index.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      let rowsHTML = '';
+      bidDatabase.forEach(bid => {
+        const dateStr = bid.timestamp ? new Date(bid.timestamp).toLocaleTimeString() + ' ' + new Date(bid.timestamp).toLocaleDateString() : 'N/A';
+        rowsHTML += `
+          <tr class="hover:bg-architect-950/50 transition font-sans border-b border-neutral-800/80">
+            <td class="px-3 py-2.5 font-mono font-bold text-white border-r border-neutral-800">
+              ${escapeHTML(bid.name)}
+            </td>
+            <td class="px-3 py-2.5 font-mono text-architect-accent font-bold border-r border-neutral-800">${formatCurrency(bid.bidAmount)}</td>
+            <td class="px-3 py-2.5 font-mono text-white font-bold border-r border-neutral-800">${formatCurrency(bid.medianAmount || bid.bidAmount)}</td>
+            <td class="px-3 py-2.5 text-neutral-400 max-w-[200px] truncate border-r border-neutral-800" title="${escapeHTML(bid.justification || '')}">
+              ${escapeHTML(bid.justification) || '<span class="italic text-neutral-600">None</span>'}
+            </td>
+            <td class="px-3 py-2.5 text-right text-neutral-500 font-mono text-[9px]">${dateStr}</td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = rowsHTML;
+    }
+
+    function syncSliderAndInput(target, source) {
+      if (target === 'lowest') {
+        const slider = document.getElementById('sliderBidAmount');
+        const numInput = document.getElementById('inputBidAmount');
+        const formatted = document.getElementById('formattedDisplayAmount');
+
+        if (!slider || !numInput) return;
+
+        if (source === 'slider') {
+          numInput.value = slider.value;
+        } else {
+          let val = Number(numInput.value);
+          if (val < 0) val = 0;
+          if (val > 60000000) val = 60000000;
+          slider.value = val;
+        }
+        if (formatted) formatted.textContent = formatCurrency(Number(slider.value)) + " CAD";
+      } else {
+        const slider = document.getElementById('sliderMedianAmount');
+        const numInput = document.getElementById('inputMedianAmount');
+        const formatted = document.getElementById('formattedDisplayMedianAmount');
+
+        if (!slider || !numInput) return;
+
+        if (source === 'slider') {
+          numInput.value = slider.value;
+        } else {
+          let val = Number(numInput.value);
+          if (val < 0) val = 0;
+          if (val > 60000000) val = 60000000;
+          slider.value = val;
+        }
+        if (formatted) formatted.textContent = formatCurrency(Number(slider.value)) + " CAD";
+      }
+    }
+
+    // Submit actions with persistent database validation
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+      document.getElementById('formErrorMessage').classList.add('hidden');
+
+      const name = document.getElementById('inputName').value.trim();
+      const bidAmount = Number(document.getElementById('inputBidAmount').value);
+      const medianAmount = Number(document.getElementById('inputMedianAmount').value);
+      const justification = document.getElementById('inputJustification').value.trim();
+
+      if (!name) {
+        showFormError("Name parameter is required.");
+        return;
+      }
+
+      const newRecord = {
+        name,
+        bidAmount,
+        medianAmount,
+        justification,
+        timestamp: new Date().toISOString()
+      };
+
+      if (isDemoMode) {
+        // Fallback local session saving
+        bidDatabase.unshift(newRecord);
+        localStorage.setItem(`gh3_clean_bids_${appId}`, JSON.stringify(bidDatabase));
+        onDatabaseUpdated();
+        showSuccessView();
+      } else {
+        const submitBtn = document.getElementById('submitButton');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<span>Saving globally...</span>`;
+        
+        try {
+          const bidsCol = collection(db, 'artifacts', appId, 'public', 'data', 'bids');
+          await addDoc(bidsCol, newRecord);
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<span>Submit Bid Forecast</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+          lucide.createIcons();
+          showSuccessView();
+        } catch (error) {
+          console.error("Firestore persistence failed, fall back to sandbox locally", error);
+          bidDatabase.unshift(newRecord);
+          localStorage.setItem(`gh3_clean_bids_${appId}`, JSON.stringify(bidDatabase));
+          onDatabaseUpdated();
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<span>Submit Bid Forecast</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+          lucide.createIcons();
+          showSuccessView();
+        }
+      }
+    }
+
+    // Admin authentication handling
+    function handleAdminAuth(e) {
+      e.preventDefault();
+      const pass = document.getElementById('adminPassword').value.trim();
+      if (pass === 'gh32021!') {
+        document.getElementById('adminAuthView').classList.add('hidden');
+        document.getElementById('adminDashboardView').classList.remove('hidden');
+        document.getElementById('adminErrorMessage').classList.add('hidden');
+        onDatabaseUpdated(); // Force a clean visual rebuild once authenticated
+      } else {
+        document.getElementById('adminErrorMessage').classList.remove('hidden');
+      }
+    }
+
+    function lockAdminDashboard() {
+      document.getElementById('adminPassword').value = '';
+      document.getElementById('adminAuthView').classList.remove('hidden');
+      document.getElementById('adminDashboardView').classList.add('hidden');
+    }
+
+    // Load mock elements for administrative layout verification
+    async function addDemoRecord() {
+      const names = ["Ananya Patel", "Jean-Luc Picard", "Saskia de Lange", "James T. Kirk", "Chloe Vance"];
+      const randomLowest = Math.floor(Math.random() * 800 + 200) * 50000; 
+      const randomMedian = randomLowest + Math.floor(Math.random() * 60) * 50000; 
+      const justifications = [
+        "Consistent structural design elements matching VIEW 10.jpg profiles.",
+        "Reflects civil underground water purification filters and mechanical routing structures.",
+        "Based on localized concrete, low-carbon copper, and twilight facade glass installations."
+      ];
+      
+      const newRecord = {
+        name: names[Math.floor(Math.random() * names.length)],
+        bidAmount: randomLowest,
+        medianAmount: randomMedian,
+        justification: justifications[Math.floor(Math.random() * justifications.length)],
+        timestamp: new Date().toISOString()
+      };
+
+      if (isDemoMode) {
+        bidDatabase.unshift(newRecord);
+        localStorage.setItem(`gh3_clean_bids_${appId}`, JSON.stringify(bidDatabase));
+        onDatabaseUpdated();
+      } else {
+        try {
+          const bidsCol = collection(db, 'artifacts', appId, 'public', 'data', 'bids');
+          await addDoc(bidsCol, newRecord);
+        } catch(e) {
+          console.error("Local save fallback during mock insert", e);
+          bidDatabase.unshift(newRecord);
+          localStorage.setItem(`gh3_clean_bids_${appId}`, JSON.stringify(bidDatabase));
+          onDatabaseUpdated();
+        }
+      }
+    }
+
+    // Safe double-confirm trigger to prevent standard browser confirmation alerts inside iframe
+    let clearConfirmArmed = false;
+    let clearConfirmTimeout = null;
+
+    async function triggerClearDatabase() {
+      const clearBtn = document.getElementById('dbClearBtn');
+      const clearText = document.getElementById('clearBtnText');
+
+      if (!clearConfirmArmed) {
+        clearConfirmArmed = true;
+        clearBtn.classList.remove('bg-red-950', 'border-red-800', 'text-red-200');
+        clearBtn.classList.add('bg-amber-600', 'border-amber-500', 'text-neutral-950');
+        clearText.textContent = "Are you sure? Click again";
+
+        // Reset state after 4 seconds of inactivity
+        clearConfirmTimeout = setTimeout(() => {
+          resetClearButtonState();
+        }, 4000);
+      } else {
+        // Confirmed second tap -> perform action
+        clearBtn.disabled = true;
+        clearText.textContent = "Purging database...";
+        clearTimeout(clearConfirmTimeout);
+
+        if (isDemoMode) {
+          bidDatabase = [];
+          localStorage.setItem(`gh3_clean_bids_${appId}`, JSON.stringify([]));
+          onDatabaseUpdated();
+          resetClearButtonState();
+        } else {
+          try {
+            const bidsCol = collection(db, 'artifacts', appId, 'public', 'data', 'bids');
+            const snapshot = await getDocs(bidsCol);
+            const deletePromises = [];
+            snapshot.forEach((docSnap) => {
+              const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'bids', docSnap.id);
+              deletePromises.push(deleteDoc(docRef));
+            });
+            await Promise.all(deletePromises);
+          } catch(e) {
+            console.error("Firestore purge process failed:", e);
+          } finally {
+            resetClearButtonState();
+          }
+        }
+      }
+    }
+
+    function resetClearButtonState() {
+      clearConfirmArmed = false;
+      const clearBtn = document.getElementById('dbClearBtn');
+      const clearText = document.getElementById('clearBtnText');
+      if (clearBtn && clearText) {
+        clearBtn.disabled = false;
+        clearBtn.className = "px-3.5 py-2.5 bg-red-950 hover:bg-red-900 border border-red-800 text-red-200 text-[10px] font-bold uppercase tracking-widest transition rounded-none select-none relative";
+        clearText.textContent = "Reset Session";
+      }
+    }
+
+    // Export spreadsheet logic
+    function exportDatabaseToCSV() {
+      if (bidDatabase.length === 0) return;
+
+      const headers = ["ID/Timestamp", "Submitter Name", "Lowest Bid (CAD)", "Median Bid (CAD)", "Statement of Rationale"];
+      const rows = bidDatabase.map((b, idx) => [
+        b.timestamp || idx,
+        b.name.replace(/"/g, '""'),
+        b.bidAmount,
+        b.medianAmount || b.bidAmount,
+        (b.justification || "").replace(/[\r\n]+/g, " ").replace(/"/g, '""')
+      ]);
+
+      const csvContent = "data:text/csv;charset=utf-8,\uFEFF" 
+        + [headers.join(","), ...rows.map(e => e.map(val => `"${val}"`).join(","))].join("\n");
+      
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `gh3_barrie_tenders_clean_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Interface triggers
+    function showSuccessView() {
+      document.getElementById('bidForm').classList.add('hidden');
+      document.getElementById('successPanel').classList.remove('hidden');
+    }
+
+    function resetFormState() {
+      document.getElementById('inputName').value = '';
+      document.getElementById('inputJustification').value = '';
+      document.getElementById('inputBidAmount').value = 30500000;
+      document.getElementById('sliderBidAmount').value = 30500000;
+      document.getElementById('inputMedianAmount').value = 32000000;
+      document.getElementById('sliderMedianAmount').value = 32000000;
+      syncSliderAndInput('lowest', 'slider');
+      syncSliderAndInput('median', 'slider');
+
+      document.getElementById('bidForm').classList.remove('hidden');
+      document.getElementById('successPanel').classList.add('hidden');
+      toggleAIPanel('aiFeasibilityPanel', false);
+    }
+
+    function showFormError(msg) {
+      const errBox = document.getElementById('formErrorMessage');
+      errBox.textContent = msg;
+      errBox.classList.remove('hidden');
+    }
+
+    function toggleModal(id, open) {
+      const elem = document.getElementById(id);
+      if (open) {
+        elem.classList.remove('hidden');
+        elem.classList.add('flex');
+      } else {
+        elem.classList.add('hidden');
+        elem.classList.remove('flex');
+      }
+    }
+
+    function formatCurrency(val) {
+      return new Intl.NumberFormat('en-CA', {
+        style: 'currency',
+        currency: 'CAD',
+        maximumFractionDigits: 0
+      }).format(val);
+    }
+
+    function escapeHTML(str) {
+      if (!str) return '';
+      return str.replace(/[&<>'"]/g, 
+        tag => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          "'": '&#39;',
+          '"': '&quot;'
+        }[tag] || tag)
+      );
+    }
+
+    // Expose interaction controls globally for module structure support
+    window.toggleModal = toggleModal;
+    window.syncSliderAndInput = syncSliderAndInput;
+    window.handleFormSubmit = handleFormSubmit;
+    window.resetFormState = resetFormState;
+    window.handleAdminAuth = handleAdminAuth;
+    window.lockAdminDashboard = lockAdminDashboard;
+    window.addDemoRecord = addDemoRecord;
+    window.triggerClearDatabase = triggerClearDatabase;
+    window.exportDatabaseToCSV = exportDatabaseToCSV;
+    window.triggerAIRationale = triggerAIRationale;
+    window.triggerAIFeasibility = triggerAIFeasibility;
+    window.toggleAIPanel = toggleAIPanel;
+    window.triggerAIConsensusReport = triggerAIConsensusReport;
+  </script>
+</body>
+</html>
